@@ -1,0 +1,5 @@
+E:/Pocket Zone 2/.utmp/RelWithDebInfo/6944k4m5/arm64-v8a/CMakeFiles/edit_cache.dir
+E:/Pocket Zone 2/.utmp/RelWithDebInfo/6944k4m5/arm64-v8a/CMakeFiles/rebuild_cache.dir
+E:/Pocket Zone 2/.utmp/RelWithDebInfo/6944k4m5/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+E:/Pocket Zone 2/.utmp/RelWithDebInfo/6944k4m5/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+E:/Pocket Zone 2/.utmp/RelWithDebInfo/6944k4m5/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir
