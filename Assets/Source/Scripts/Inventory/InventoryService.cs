@@ -28,10 +28,10 @@ namespace Inventory
             return inventory.AddItems(itemId, sprite, amount);
         }
 
-        public RemoveItemsToInventoryGridResult RemoveItems(string ownerId, string itemId, int amount = 1)
+        public RemoveItemsToInventoryGridResult RemoveItems(string ownerId, string itemId, int currentAmount, int amount = 1)
         {
             var inventory = _inventoriesMap[ownerId];
-            return inventory.RemoveItems(itemId, amount);
+            return inventory.RemoveItems(itemId, currentAmount, amount);
         }
 
         public RemoveItemsToInventoryGridResult RemoveItems(string ownerId, Vector2Int slotCords, string itemId, int amount = 1)

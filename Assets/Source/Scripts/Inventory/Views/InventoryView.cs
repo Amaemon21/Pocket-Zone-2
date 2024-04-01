@@ -18,5 +18,13 @@ namespace Inventory
         {
             return _slots[index];
         }
+
+        public void AllUnSelected()
+        {
+            for (int i = 0; i < _slots.Length; i++)
+            {
+                _slots[i].UnSelected();
+            }
+        }
     }
 }

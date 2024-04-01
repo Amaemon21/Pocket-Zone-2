@@ -12,17 +12,7 @@ namespace Inventory
         [SerializeField] private TMP_Text _textAmount;
         [SerializeField] private Image _icon;
 
-        public bool SelectedImage
-        {
-            get => _selectedImage.sprite;
-            set
-            {
-                if (value == true)
-                    _selectedImage.enabled = value;
-                else
-                    _selectedImage.enabled = value;
-            }
-        }
+        public bool IsEmpty { get; private set; } = true;
 
         public string Title
         {
@@ -33,7 +23,19 @@ namespace Inventory
         public int Amount
         {
             get => Convert.ToInt32(_textAmount.text);
-            set => _textAmount.text = value == 0 ? "" : value.ToString();
+            set
+            {
+                if (value == 0)
+                {
+                    _textAmount.text = "";
+                    IsEmpty = true;
+                }
+                else
+                {
+                    _textAmount.text = value.ToString();
+                    IsEmpty = false; 
+                }
+            }
         }
 
         public Sprite Sprite
@@ -49,9 +51,20 @@ namespace Inventory
                 {
                     _icon.enabled = true;
                     _icon.sprite = value;
+                    IsEmpty = false;
                 }
             }
 
+        }
+
+        public void Selected()
+        {   
+            _selectedImage.enabled = true;
+        }
+
+        public void UnSelected()
+        {
+            _selectedImage.enabled = false;
         }
     }
 }

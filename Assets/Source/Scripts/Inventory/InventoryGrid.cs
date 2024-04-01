@@ -71,10 +71,7 @@ namespace Inventory
             int newValue = slot.Amount + amount;
             int itemsAddedAmount = 0;
 
-            if (slot.IsEmpty)
-            {
-                slot.ItemId = itemId;
-            }
+            if (slot.IsEmpty) slot.ItemId = itemId;
 
             int itemSlotCapacity = GetItemSlotCapacity(itemId);
 
@@ -99,38 +96,38 @@ namespace Inventory
             return new AddItemsToInventoryGridResult(OwnerId, amount, itemsAddedAmount, sprite);
         }
 
-        public RemoveItemsToInventoryGridResult RemoveItems(string itemId, int amount = 1)
+        public RemoveItemsToInventoryGridResult RemoveItems(string itemId, int currentAmount, int removeAmount = 1)
         {
-            if (!Has(itemId, amount))
-            {
-                return new RemoveItemsToInventoryGridResult(OwnerId, amount, false);
-            }
+            if (!Has(itemId, removeAmount)) return new RemoveItemsToInventoryGridResult(OwnerId, removeAmount, false);
 
-            var amountToRemove = amount;
+            int amountToRemove = removeAmount;
 
             for (int i = 0; i < Size.x; i++)
             {
                 for (int j = 0; j < Size.y; j++)
                 {
-                    var slotCoords = new Vector2Int(i, j);
-                    var slot = _slotsMap[slotCoords];
+                    Vector2Int slotCoords = new Vector2Int(i, j);
+                    InventorySlot slot = _slotsMap[slotCoords];
 
-                    if (slot.ItemId != itemId)
-                    {
-                        continue;
-                    }
+                    if (slot.Amount != currentAmount) continue;
+
+                    if (slot.ItemId != itemId) continue;
 
                     if (amountToRemove > slot.Amount)
                     {
                         amountToRemove -= slot.Amount;
-                        slot.Sprite = null;
+
+                        if (slot.Amount <= 0) slot.Sprite = null;
+
                         RemoveItems(slotCoords, itemId, slot.Amount);
                     }
                     else
                     {
-                        slot.Sprite = null;
-                        RemoveItems(slotCoords, itemId, slot.Amount);
-                        return new RemoveItemsToInventoryGridResult(OwnerId, amount, true);
+                        if (slot.Amount <= 0) slot.Sprite = null;
+    
+                        RemoveItems(slotCoords, itemId, amountToRemove);
+
+                        return new RemoveItemsToInventoryGridResult(OwnerId, removeAmount, true);
                     }
                 }
             }
@@ -140,7 +137,7 @@ namespace Inventory
 
         public RemoveItemsToInventoryGridResult RemoveItems(Vector2Int slotCoords, string itemId, int amount = 1)
         {
-            var slot = _slotsMap[slotCoords];
+            InventorySlot slot = _slotsMap[slotCoords];
 
             if (slot.IsEmpty || slot.ItemId != itemId || slot.Amount < amount)
             {
@@ -148,7 +145,12 @@ namespace Inventory
             }
 
             slot.Amount -= amount;
-            slot.Sprite = null;
+
+            if (slot.Amount <= 0)
+            {
+                slot.Sprite = null;
+            }
+
             if (slot.Amount == 0)
             {
                 slot.ItemId = null;
