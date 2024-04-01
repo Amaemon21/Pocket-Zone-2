@@ -8,8 +8,8 @@ public class Health : MonoBehaviour, IDamageable
 
     private float _minValue = 0;
 
-    public event Action<float> OnHealthChange;
-    public event Action OnDiedChange;
+    public event Action<float> HealthChanged;
+    public event Action DiedChanged;
 
     public float MaxHealth => _maxHealth;
 
@@ -26,9 +26,9 @@ public class Health : MonoBehaviour, IDamageable
                 _currentHealth -= damage;
             
             if (_currentHealth <= _minValue)
-                OnDiedChange?.Invoke();
+                DiedChanged?.Invoke();
 
-            OnHealthChange?.Invoke(_currentHealth);
+            HealthChanged?.Invoke(_currentHealth);
         }
     }
 }

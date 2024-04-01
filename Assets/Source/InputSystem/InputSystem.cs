@@ -35,6 +35,15 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Value"",
+                    ""id"": ""fcdbe447-f617-4418-b3e5-d9d3dc613ca7"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -46,6 +55,17 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Land"",
                     ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1573d98f-b2d7-4934-8ed2-bee081b5068c"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -74,6 +94,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         // Land
         m_Land = asset.FindActionMap("Land", throwIfNotFound: true);
         m_Land_Shoot = m_Land.FindAction("Shoot", throwIfNotFound: true);
+        m_Land_Inventory = m_Land.FindAction("Inventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -136,11 +157,13 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Land;
     private List<ILandActions> m_LandActionsCallbackInterfaces = new List<ILandActions>();
     private readonly InputAction m_Land_Shoot;
+    private readonly InputAction m_Land_Inventory;
     public struct LandActions
     {
         private @InputSystem m_Wrapper;
         public LandActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @Shoot => m_Wrapper.m_Land_Shoot;
+        public InputAction @Inventory => m_Wrapper.m_Land_Inventory;
         public InputActionMap Get() { return m_Wrapper.m_Land; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -153,6 +176,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Shoot.started += instance.OnShoot;
             @Shoot.performed += instance.OnShoot;
             @Shoot.canceled += instance.OnShoot;
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
         }
 
         private void UnregisterCallbacks(ILandActions instance)
@@ -160,6 +186,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Shoot.started -= instance.OnShoot;
             @Shoot.performed -= instance.OnShoot;
             @Shoot.canceled -= instance.OnShoot;
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
         }
 
         public void RemoveCallbacks(ILandActions instance)
@@ -189,5 +218,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     public interface ILandActions
     {
         void OnShoot(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
     }
 }

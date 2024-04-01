@@ -10,13 +10,7 @@ public class HealthBar : Bar
         Slider.value = Slider.maxValue;
     }
 
-    private void OnEnable()
-    {
-        Health.OnHealthChange += OnValueChanged;
-    }
+    private void OnEnable() => Health.HealthChanged += OnValueChanged;
 
-    private void OnDisable()
-    {
-        Health.OnHealthChange -= OnValueChanged;
-    }
+    private void OnDisable() => Health.HealthChanged -= OnValueChanged;
 }
